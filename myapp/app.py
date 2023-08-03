@@ -14,10 +14,11 @@ choices = {"a": "Scatter plot",
            "g": "Pie cart"}
 
 # read in and prepare data
-df = pd.read_csv('chart.csv', sep = ';')
-
+df = pd.read_csv(Path(__file__).parent / 'www/chart.csv', sep = ';')
 df.rename(columns = {'Category': 'Year', 'Publications (total)': 'Publications'}, inplace = True)
 df = df[df['Year']< 2023]
+
+
 
 app_ui = ui.page_fluid(
     ui.panel_title("Which display do you prefer, and why?"),
@@ -38,12 +39,13 @@ app_ui = ui.page_fluid(
     ),
 )
 
-
 def server(input, output, session):
     @output
     @render.plot
     def my_plot():
-        plt.title("Number of scientific publications containing Data Literacy in title or abstract by year.")
+        # title for all plots
+        plt.title("Number of scientific publications containing Data Literacy in title or abstract by year")
+        # different plots
         if input.x1() == "f":
             x = df.explode('Publications').reset_index()
             plt.imshow(x[['Publications','Year']].to_numpy().astype('float').T)
@@ -60,6 +62,7 @@ def server(input, output, session):
             fig, ax = plt.subplots()
             ax.bar('Year', 'Sum', data=df)
             return ax.bar('Year', 'Publications', data=df)
+        # last but not least: these share the same y axis
         else:
             plt.ylim(0, 8000)
             if input.x1() == "a":
