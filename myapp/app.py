@@ -14,7 +14,7 @@ choices = {"a": "Scatter plot",
            "g": "Pie cart"}
 
 # read in and prepare data
-df = pd.read_csv(Path(__file__).parent / 'www/chart.csv', sep = ';')
+df = pd.read_csv(Path(__file__).parent / 'data/chart.csv', sep = ';')
 df.rename(columns = {'Category': 'Year', 'Publications (total)': 'Publications'}, inplace = True)
 df = df[df['Year']< 2023]
 
